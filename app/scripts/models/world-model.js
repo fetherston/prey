@@ -8,7 +8,7 @@ var WorldModel = Backbone.Model.extend({
     defaults: {
         height: 0,
         width: 0,
-        frameRate: 100
+        frameRate: 30
     },
 
     initialize: function() {
