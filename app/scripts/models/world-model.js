@@ -8,8 +8,11 @@ var WorldModel = Backbone.Model.extend({
     defaults: {
         height: 0,
         width: 0,
+        // refresh rate in MS
         frameRate: 30
     },
+
+    particles: [],
 
     initialize: function() {
         this.timer = setInterval(_.bind(this.tick, this), this.get('frameRate'));

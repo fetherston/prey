@@ -8,7 +8,7 @@ html, body {
 }
 
 body {
-    background-color: #666;
+    background-color: #333;
 }
 
 .particle {
@@ -17,4 +17,13 @@ body {
     width: 10px;
     position: absolute;
     border-radius: 50%;
+
+    .show-affection {
+        position: absolute;
+        border-radius: 50%;
+        background-color: blue;
+        content: ' ';
+        opacity: 0.1;
+        transform: translate3d(-50%, -50%, 0);
+    }
 }

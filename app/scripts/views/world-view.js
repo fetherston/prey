@@ -9,11 +9,11 @@ var ParticleView = require('./particle-view');
 
 var WorldView = Backbone.View.extend({
 
-    particles: [],
-
     events: {
-        'click': 'spawnParticle'
+        'click': 'onClick'
     },
+
+    multiplier: 5,
 
     initialize: function() {
         this.model = new WorldModel();
@@ -26,14 +26,19 @@ var WorldView = Backbone.View.extend({
         this.model.set('width', this.$el.width());
     },
 
+    onClick: function() {
+        for (var i = 0; i < this.multiplier; i++) {
+            this.spawnParticle();
+        }
+    },
+
     spawnParticle: function() {
         var particle = new ParticleView({
             worldModel: this.model
         });
+        this.model.particles.push(particle);
         this.$el.append(particle.$el);
-        this.particles.push(particle);
     }
-
 });
 
 module.exports = WorldView;
