@@ -1,5 +1,5 @@
 ## What is this?
-I decided to try and make a particle swarm in JavaScript
+I decided to try and make a particle swarm in JavaScript. [Check it out here](http://fetherston.github.io/prey/).
 ![alt text](http://i.imgur.com/KH1nnPP.png "JavaScript swarm")
 
 
