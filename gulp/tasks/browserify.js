@@ -8,6 +8,8 @@ var debug = require('gulp-debug');
 var rename = require('gulp-rename');
 var rev = require('gulp-rev');
 var source = require('vinyl-source-stream');
+var uglify = require('gulp-uglify');
+var buffer = require('vinyl-buffer');
 
 // Vendor
 gulp.task('vendor', function() {
@@ -17,6 +19,18 @@ gulp.task('vendor', function() {
     .require('backbone')
     .bundle()
     .pipe(source('vendor.js'))
+    .pipe(gulp.dest(config.dist + '/scripts/'));
+});
+
+gulp.task('vendor:dist', function() {
+  return browserify({debug: true})
+    .require('jquery')
+    .require('lodash', {expose: 'underscore'})
+    .require('backbone')
+    .bundle()
+    .pipe(source('vendor.js'))
+    .pipe(buffer())
+    .pipe(uglify())
     .pipe(gulp.dest(config.dist + '/scripts/'));
 });
 
@@ -30,6 +44,20 @@ gulp.task('browserify', function() {
     .transform(partialify) // Transform to allow requireing of templates
     .bundle()
     .pipe(source('main.js'))
+    .pipe(gulp.dest(config.dist + '/scripts/'));
+});
+
+gulp.task('browserify:dist', function() {
+  return browserify({debug: true})
+    .add('./app/scripts/main.js')
+    .external('jquery')
+    .external('lodash')
+    .external('backbone')
+    .transform(partialify) // Transform to allow requireing of templates
+    .bundle()
+    .pipe(source('main.js'))
+    .pipe(buffer())
+    .pipe(uglify())
     .pipe(gulp.dest(config.dist + '/scripts/'));
 });
 
