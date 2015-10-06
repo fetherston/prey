@@ -10,20 +10,19 @@ var rename = require('gulp-rename');
 var rev = require('gulp-rev');
 var size = require('gulp-size');
 
-// Images
-gulp.task('images', function() {
-	var dest = config.dist + '/images';
+// Assets
+gulp.task('assets', function() {
+	var dest = config.dist + '/assets';
 
-	return gulp.src('app/images/**/*')
+	return gulp.src('app/assets/**/*')
 		.pipe(changed(dest)) // Ignore unchanged files
 		.pipe(imagemin()) // Optimize
 		.pipe(gulp.dest(dest));
 });
 
-
-// Images Dist
-gulp.task('images:dist', ['images'], function () {
-  return gulp.src(['app/images/**/*'], {base: path.resolve('app')})
+// Assets Dist
+gulp.task('assets:dist', ['assets'], function () {
+  return gulp.src(['app/assets/**/*'], {base: path.resolve('app')})
     // Commenting out the cache section for now.
     // .pipe(gulp.dest('dist'))
     // .pipe(rev())
@@ -36,7 +35,7 @@ gulp.task('images:dist', ['images'], function () {
     .pipe(rev())
     .pipe(gulp.dest('dist'))
     .pipe(size())
-    .pipe(rev.manifest())
-    .pipe(rename('image-manifest.json'))
+    // .pipe(rev.manifest())
+    // .pipe(rename('image-manifest.json'))
     .pipe(gulp.dest('dist'));
 });
