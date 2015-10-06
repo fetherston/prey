@@ -10,7 +10,8 @@ var ParticleView = require('./particle-view');
 var WorldView = Backbone.View.extend({
 
     events: {
-        'click': 'onClick'
+        'click': 'onClick',
+        'touchstart': 'onClick'
     },
 
     multiplier: 5,
