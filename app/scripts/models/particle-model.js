@@ -18,7 +18,7 @@ var ParticleModel = Backbone.Model.extend({
         angle: 0, // angle in degrees
         x: 100, // initial x/y position
         y: 100,
-        directionChangethrottle: 1000 // min time between direction computations
+        directionChangethrottle: 500 // min time between direction computations
     },
 
     initialize: function(options) {
@@ -42,7 +42,7 @@ var ParticleModel = Backbone.Model.extend({
     setPosition: function() {
         this.headTowardsSwarm();
         var v = this.get('velocity');
-        var angle = this.angleAsRadians();
+        var angle = this.angleAsRadians(this.get('angle'));
         var currX = this.get('x');
         var currY = this.get('y');
 
@@ -51,10 +51,6 @@ var ParticleModel = Backbone.Model.extend({
             'y': currY + (v * Math.sin(angle))
         }, {validate: true});
         this.trigger('positionChange');
-    },
-
-    angleAsRadians: function() {
-        return this.get('angle') * (Math.PI / 180);
     },
 
     validate: function(attrs) {
@@ -77,14 +73,14 @@ var ParticleModel = Backbone.Model.extend({
 
     headTowardsSwarm: function() {
         var neighbors = [];
-        var angles = 0;
+        var angles = [];
         var v = this.get('velocity');
         for (var i = 0; i < this.worldModel.particles.length; i++) {
             var particleModel = this.worldModel.particles[i].model;
             var isClose = this.testDistance(particleModel);
             if (isClose && particleModel.get('velocity') >= this.get('velocity')) {
                 neighbors.push(particleModel);
-                angles += particleModel.get('angle');
+                angles.push(particleModel.get('angle'))
                 v += particleModel.get('velocity');
             }
         }
@@ -93,9 +89,7 @@ var ParticleModel = Backbone.Model.extend({
             return;
         }
 
-        var neighborAvgDirection = angles / neighbors.length;
-
-        this.setAngleAndVelocity(neighborAvgDirection, (v / (neighbors.length + 1)));
+        this.setAngleAndVelocity(this.meanAngleOfAngles(angles), (v / (neighbors.length + 1)));
     },
 
     testDistance: function(particleModel) {
@@ -120,10 +114,28 @@ var ParticleModel = Backbone.Model.extend({
 
     setAngleAndVelocity: function(a, v) {
         this.set({
-            'angle': a,
+            'angle': Math.trunc(a),
             'velocity': v
         });
-    }
+    },
+
+    // TODO: utils?
+    angleAsRadians: function(a) {
+        return a * (Math.PI / 180);
+    },
+
+    // TODO: utils?
+    meanAngleOfAngles: function(arrayOfAngles) {
+        var sum = function(array) {
+            var s = 0;
+            for (var i in array) {
+                s += array[i];
+            }
+            return s;
+        };
+        // i stole this from rosetta code
+        return 180 / Math.PI * Math.atan2(sum(arrayOfAngles.map(this.angleAsRadians).map(Math.sin)) / arrayOfAngles.length, sum(arrayOfAngles.map(this.angleAsRadians).map(Math.cos))/arrayOfAngles.length);
+    },
 });
 
 module.exports = ParticleModel;
