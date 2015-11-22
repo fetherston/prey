@@ -10,9 +10,6 @@ gulp.task('connect', function () {
     .use(require('connect-livereload')({ port: config.livereloadPort }))
     .use('/', connect.static('.tmp'))
     .use('/', connect.static('app'))
-    // paths to bower_components should be relative to the current file
-    // e.g. in app/index.html you should use ../bower_components
-    .use('/bower_components', connect.static('bower_components'))
     .use(connect.directory('app'));
 
   require('http').createServer(app)

@@ -14,7 +14,6 @@ gulp.task('styles', function () {
   return gulp.src('app/scss/app.scss')
     .pipe(sass({
       outputStyle: 'nested',
-      includePaths: [config.bower + '/foundation/scss'],
       sourceComments: 'map'
     }))
     // .pipe(prefix('last 1 version'))  // add vendor prefixes if necessary
@@ -27,9 +26,7 @@ gulp.task('styles:dist', function () {
   // var manifest = require('../../dist/image-manifest');
   // See https://github.com/andrew/node-sass for more options
   return gulp.src('app/scss/app.scss')
-    .pipe(sass({
-      includePaths: [config.bower + '/foundation/scss']
-    }))
+    .pipe(sass())
     .pipe(prefix('last 1 version'))  // add vendor prefixes if necessary
     // .pipe(fingerprint(manifest, {verbose: true}))
     .pipe(csso())  // minify css

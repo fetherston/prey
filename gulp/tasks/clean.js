@@ -5,5 +5,5 @@ var rimraf = require('gulp-rimraf');
 
 // Clean
 gulp.task('clean', function () {
-    return gulp.src(['.tmp', 'dist/styles', 'dist/scripts', 'dist/images'], {read: false}).pipe(rimraf());
+    return gulp.src(['.tmp', 'dist'], {read: false}).pipe(rimraf());
 });
